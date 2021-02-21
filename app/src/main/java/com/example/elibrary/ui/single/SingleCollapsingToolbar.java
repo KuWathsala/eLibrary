@@ -4,12 +4,14 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SingleCollapsingToolbar {
 
     private static SingleCollapsingToolbar collapsingToolbar;
     private CollapsingToolbarLayout collToolbar;
     private ImageView toolbarImageView;
+    private FloatingActionButton mainBottomActionButton;
 
     private SingleCollapsingToolbar(){}
 
@@ -34,5 +36,13 @@ public class SingleCollapsingToolbar {
 
     public ImageView getToolbarImageView() {
         return this.toolbarImageView;
+    }
+
+    public FloatingActionButton getMainBottomActionButton() {
+        return mainBottomActionButton;
+    }
+
+    public void setMainBottomActionButton(FloatingActionButton mainBottomActionButton) {
+        this.mainBottomActionButton = mainBottomActionButton;
     }
 }

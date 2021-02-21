@@ -1,4 +1,4 @@
-package com.example.elibrary.ui.Auth;
+package com.example.elibrary.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 

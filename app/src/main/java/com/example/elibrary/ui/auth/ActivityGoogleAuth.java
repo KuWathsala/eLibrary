@@ -1,4 +1,4 @@
-package com.example.elibrary.ui.Auth;
+package com.example.elibrary.ui.auth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,15 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.elibrary.Controllers.UsersController;
 import com.example.elibrary.MainActivity;
 import com.example.elibrary.R;
 import com.example.elibrary.models.User;
-import com.example.elibrary.ui.home.ActivityHomeLibrary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,6 +29,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class ActivityGoogleAuth extends AppCompatActivity {
@@ -44,6 +46,8 @@ public class ActivityGoogleAuth extends AppCompatActivity {
     private String id;
     private Uri profileImage;
     ProgressBar progressCircular;
+
+    private UsersController usersController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +117,30 @@ public class ActivityGoogleAuth extends AppCompatActivity {
     }
 
     private void firebaseGoogleAuth(GoogleSignInAccount acc) {
+        Log.d("Auth", "user auth firebaseGoogleAuth");
         AuthCredential authCredential = GoogleAuthProvider.getCredential(acc.getIdToken(), null);
         firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     //Toast.makeText(MainActivity.this, "successed", Toast.LENGTH_LONG).show();
-                    FirebaseUser user =   firebaseAuth.getCurrentUser();
-                    updateUI(user);
+                    final FirebaseUser user =   firebaseAuth.getCurrentUser();
+
+                    user.getIdToken(true)
+                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                    if (task.isSuccessful()) {
+                                        String idToken = task.getResult().getToken();
+                                        // Send token to your backend via HTTPS
+                                        Log.d("Auth", "user auth token "+idToken);
+                                        updateUI(user);
+                                    } else {
+                                        // Handle error -> task.getException();
+                                        updateUI(null);
+                                    }
+                                }
+                            });
+
                 }else{
                     //Toast.makeText(MainActivity.this, "failed", Toast.LENGTH_LONG).show();
                     updateUI(null);
@@ -143,12 +163,22 @@ public class ActivityGoogleAuth extends AppCompatActivity {
             final Intent intent = new Intent(this, MainActivity.class);
             Bundle bundle = new Bundle();
 
-            User user = User.getInstance();
+            final User user = User.getInstance();
             user.name=name;
             user.familyName=familyName;
             user.email=email;
             user.id=id;
             user.profileImage=profileImage;
+
+            usersController = new UsersController();
+
+//           new Thread(new Runnable() {
+//                public void run() {
+//                    // stuff here
+//                    //usersController.addUser(user);
+//                }
+//            }).start();
+
 
             startActivity(intent);
 

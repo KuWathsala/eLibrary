@@ -17,5 +17,12 @@
     <string name="suggestions">Suggest for you</string>
 
     <string name="title_book_request">Request book</string>
+    <string name="add_new_book">Add new book</string>
+
+<!--    add book -->
+    <string name="book_name">NAME</string>
+    <string name="author">AUTHOR</string>
+    <string name="category">CATEGORY</string>
+    <string name="language">LANGUAGE</string>
 
 </resources>

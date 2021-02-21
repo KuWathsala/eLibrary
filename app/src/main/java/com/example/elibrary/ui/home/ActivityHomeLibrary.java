@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.widget.SearchView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,13 +66,8 @@ public class ActivityHomeLibrary extends AppCompatActivity {
         list.add("anura 7");
         list.add("dimal 8");
 
-        //toolbar
-        //mToolbar = (Toolbar) findViewById(R.id.home_library_toolbar);
-        //setActionBar(mToolbar);
-
         recyclerView = findViewById(R.id.home_library_recycler_view);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        //new LinearLayoutManager(root.getContext(), LinearLayoutManager.VERTICAL,false)
         recyclerView.setLayoutManager(mLayoutManager);
         collectionAdaptor = new LibraryActivityAdaptor(getApplicationContext(), list);
         recyclerView.setAdapter(collectionAdaptor);
@@ -129,6 +125,15 @@ class LibraryActivityAdaptor extends RecyclerView.Adapter<LibraryActivityAdaptor
 
     @Override
     public void onBindViewHolder(@NonNull LibraryActivityAdaptor.ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), HomeBookDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -162,16 +167,6 @@ class LibraryActivityAdaptor extends RecyclerView.Adapter<LibraryActivityAdaptor
                 Log.d("A", "Member last"+filterResults.values);
                 return filterResults;
 
-//                if (charSequence.toString().isEmpty()) {
-//                    filteredList.addAll(listAll);
-//                } else {
-//                    for (String item: listAll) {
-//                        if (item.toLowerCase().contains(charSequence.toString().toLowerCase())){
-//                            filteredList.add(item);
-//                            Log.d("Home", "test home publishResults "+ item);
-//                        }
-//                    }
-//                }
             }
 
             @Override

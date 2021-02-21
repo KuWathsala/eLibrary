@@ -4,6 +4,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,12 +16,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 
+import com.example.elibrary.MainActivity;
 import com.example.elibrary.R;
 import com.example.elibrary.models.User;
+import com.example.elibrary.ui.home.HomeBookDetailsActivity;
 import com.example.elibrary.ui.library.LibraryViewModel;
 import com.example.elibrary.ui.single.Constants;
 import com.example.elibrary.ui.single.SingleApplBarLayout;
@@ -40,10 +48,10 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             final ViewGroup container, Bundle savedInstanceState) {
         profileViewModel =
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         float heightDp = getResources().getDimensionPixelSize(R.dimen.app_bar_layout_height_max_phone);
         SingleApplBarLayout.getInstance().getAppBarLayout().getLayoutParams().height = (int)heightDp;
@@ -52,8 +60,6 @@ public class ProfileFragment extends Fragment {
         user = User.getInstance();
         SingleCollapsingToolbar.getInstance().getCollapsingToolbarLayout().setTitle(user.name);
         Uri imgUri=Uri.parse(String.valueOf(user.profileImage));
-        //SingleCollapsingToolbar.getInstance().getToolbarImageView().setImageURI(null);
-        //SingleCollapsingToolbar.getInstance().getToolbarImageView().setImageURI(imgUri);
         Picasso.with(getContext()).load(user.profileImage).into(SingleCollapsingToolbar.getInstance().getToolbarImageView());
 
         list.add("shedule 1");
@@ -65,6 +71,7 @@ public class ProfileFragment extends Fragment {
         list.add("shedule 7");
         list.add("shedule 8");
 
+
         recyclerView = root.findViewById(R.id.profile_recycler_view_1_collection);
         GridLayoutManager mLayoutManager = new GridLayoutManager(root.getContext(), 2);
         //new LinearLayoutManager(root.getContext(), LinearLayoutManager.VERTICAL,false)
@@ -72,6 +79,21 @@ public class ProfileFragment extends Fragment {
         CollectionAdaptor collectionAdaptor = new CollectionAdaptor(root.getContext(), list);
         recyclerView.setAdapter(collectionAdaptor);
 
+        //add new book
+        SingleCollapsingToolbar.getInstance().getMainBottomActionButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), ActivityAddBook.class));
+                //ViewGroup.LayoutParams.MATCH_PARENT
+//                View v = getLayoutInflater().inflate(R.layout.activity_add_book,container,false);
+//                PopupWindow popupWindow=new PopupWindow(v, v.getWidth(), v.getHeight(), false);
+//                popupWindow.setBackgroundDrawable(new ColorDrawable(Color.GRAY));
+//                popupWindow.setOutsideTouchable(true);
+//                popupWindow.showAtLocation(v, Gravity.CENTER,0,0);
+            }
+        });
+
+        //setHasOptionsMenu(false);
         return root;
     }
 
@@ -103,6 +125,15 @@ class CollectionAdaptor extends RecyclerView.Adapter<CollectionAdaptor.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull CollectionAdaptor.ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), HomeBookDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

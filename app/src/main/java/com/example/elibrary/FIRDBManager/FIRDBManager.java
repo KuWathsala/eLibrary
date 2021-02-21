@@ -10,9 +10,9 @@ public class FIRDBManager {
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    public static final String USER = "User";
+    public static final String USERS = "Users";
     public static final String LIBRARY = "Library";
-    public static final String CATEGORY = "Category";
+    public static final String CATEGORIES = "Categories";
 
     private FIRDBManager(){}
 
@@ -27,12 +27,16 @@ public class FIRDBManager {
         return mDatabase;
     }
 
+    public DatabaseReference getUserRef() {
+        return getRootRef().child(USERS);
+    }
+
     public DatabaseReference getLibraryRef() {
-        return mDatabase.child(LIBRARY);
+        return getRootRef().child(LIBRARY);
     }
 
     public DatabaseReference getCategoryRef() {
-        return mDatabase.child(CATEGORY);
+        return getRootRef().child(CATEGORIES);
     }
 
 }

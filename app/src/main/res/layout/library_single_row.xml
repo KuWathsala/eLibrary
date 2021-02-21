@@ -46,12 +46,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/card_button_more"
+                style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="@string/title_home"
-                style="?attr/borderlessButtonStyle"
-                />
+                android:text="@string/title_home" />
 
         </LinearLayout>
 

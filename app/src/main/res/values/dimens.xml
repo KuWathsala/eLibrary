@@ -11,12 +11,16 @@
     <dimen name="app_bar_layout_height_max_phone">250dp</dimen>
 
     <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_bottom_default_phone">72dp</dimen>
 
     <dimen name="button_width_default">100dp</dimen>
 
     <dimen name="card_frame_default_width">250dp</dimen>
     <dimen name="card_frame_default_height">320dp</dimen>
     <dimen name="card_image_default_height">150</dimen>
+
+    <dimen name="text_default_size">20sp</dimen>
 
 </resources>
